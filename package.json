@@ -1,0 +1,24 @@
+{ "name": "dust-x"
+, "version": "1.0.0-dev"
+, "author": "Laurie Harper (http://laurie.holoweb.net/)"
+, "homepage": "https://github.com/laurie71/dust-x"
+, "description": "Express integration for Dust templating engine"
+, "keywords": ["dust", "express", "html", "web", "view", "template"]
+
+, "repository": 
+  { "type": "git"
+  , "url": "git://github.com/laurie71/dust-x.git"
+  }
+
+, "main": "./dust-x.js"
+, "engines": { "node": "~v0.4" }
+, "scripts": { "test": "expresso -I . test/*-tests.js" }
+
+, "dependencies": 
+  { "dust": "~0.3"
+  }
+
+, "devDependencies": 
+  { "expresso": "*"
+  }
+}

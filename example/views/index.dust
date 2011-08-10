@@ -1,0 +1,11 @@
+{!>layout/!}
+{<main}
+<h1>{title}</h1>
+<p>
+    Simple example of using 
+    <a href="http://akdubya.github.com/dustjs/">Dust</a>
+    templates with 
+    <a href="http://expressjs.com/">Express</a>
+    via <code>dust-x</code>.
+</p>
+{/main}
