@@ -17,18 +17,16 @@ app.configure(function() {
     app.set('views', __dirname + '/views')
     app.register('.dust', dustx/*({})*/)
     app.set('view engine', 'dust')
-  
-    // app.use(app.router)
-    // app.use(express.static(__dirname + '/public'))
+    app.use(app.router)
 })
 
-// app.configure('development', function() {
-//     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })) 
-// })
-// 
-// app.configure('production', function() {
-//     app.use(express.errorHandler()) 
-// })
+app.configure('development', function() {
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true })) 
+})
+
+app.configure('production', function() {
+    app.use(express.errorHandler()) 
+})
 
 // Routes
 
