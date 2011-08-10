@@ -33,7 +33,6 @@ dust.optimizers.format = function(context, node) {
 dust.onLoad = function onLoad(name, context, callback) {
     debug('onLoad', name)
 
-try{
     // var v = view.lookup(name, context.stack.head)
     
     function hintAtViewPaths(view, options) {
@@ -73,12 +72,6 @@ try{
     
     var v = view
     
-}catch(e){console.log(e.stack||e)}
-
-if (!v.exists) {
-debug('ERROR: template not found',name)
-return callback(new Error('Template Not Found: '+name)) // xxx use reporting from view.compile()
-}
     debug('onLoad ->', summary(v.contents))
     callback(null, v.contents)
 }
