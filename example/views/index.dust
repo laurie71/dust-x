@@ -11,6 +11,7 @@
     <p>Other examples of use:
         <ul>
             <li><a href="with-layout">Page with layout</a></li>
+            <li><a href="syntax-error">Page with syntax error</a></li>
         </ul>
     </p>
 </body>
