@@ -34,43 +34,7 @@ dust.onLoad = function onLoad(name, context, callback) {
     debug('onLoad', name)
 
     // var v = view.lookup(name, context.stack.head)
-    
-    function hintAtViewPaths(view, options) {
-      console.error();
-      console.error('failed to locate view "' + view.view + '", tried:');
-      console.error('  - ' + new View(view.path, options).path);
-      console.error('  - ' + new View(view.prefixPath, options).path);
-      console.error('  - ' + new View(view.indexPath, options).path);
-      if (!options.isLayout) console.error('  - ' + new View(view.upIndexPath, options).path);
-      if (options.isLayout) console.error('  - ' + new View(view.rootPath, options).path);
-      console.error();
-    }
-    
-    // Populate view
-    var view, options = context.stack.head
-    var orig = view = new View(name, options);
-
-    // Try _ prefix ex: ./views/_user.jade
-    if (!view.exists) view = new View(orig.prefixPath, options);
-
-    // Try index ex: ./views/user/index.jade
-    if (!view.exists) view = new View(orig.indexPath, options);
-
-    // Try ../<name>/index ex: ../user/index.jade
-    // when calling partial('user') within the same dir
-    if (!view.exists && !options.isLayout) view = new View(orig.upIndexPath, options);
-
-    // Try layout relative to the "views" dir 
-    if (!view.exists && options.isLayout) view = new View(orig.rootPath, options);
-
-    // Does not exist
-    if (!view.exists) {
-      // if (app.enabled('hints')) 
-        hintAtViewPaths(orig, options);
-      throw new Error('failed to locate view "' + orig.view + '"');
-    }
-    
-    var v = view
+    var v = view_lookup(name, context.stack.head)
     
     debug('onLoad ->', summary(v.contents))
     callback(null, v.contents)
@@ -181,6 +145,48 @@ http.ServerResponse.prototype.render = function render(xview, opts, fn, parent, 
     // call default render, passing a no-op callbackto prevent Express from 
     // calling res.send() 
     _render.call(this, xview, opts, _onerror, parent, sub)
+}
+
+// ------------------------------------------------------------------------
+
+// view.lookup doesn't exist yet in the released version of Express, so
+// it's reproduced here:
+function view_lookup(name, options) {
+    function hintAtViewPaths(view, options) {
+      console.error();
+      console.error('failed to locate view "' + view.view + '", tried:');
+      console.error('  - ' + new View(view.path, options).path);
+      console.error('  - ' + new View(view.prefixPath, options).path);
+      console.error('  - ' + new View(view.indexPath, options).path);
+      if (!options.isLayout) console.error('  - ' + new View(view.upIndexPath, options).path);
+      if (options.isLayout) console.error('  - ' + new View(view.rootPath, options).path);
+      console.error();
+    }
+    
+    // Populate view
+    var view, orig = view = new View(name, options);
+
+    // Try _ prefix ex: ./views/_user.jade
+    if (!view.exists) view = new View(orig.prefixPath, options);
+
+    // Try index ex: ./views/user/index.jade
+    if (!view.exists) view = new View(orig.indexPath, options);
+
+    // Try ../<name>/index ex: ../user/index.jade
+    // when calling partial('user') within the same dir
+    if (!view.exists && !options.isLayout) view = new View(orig.upIndexPath, options);
+
+    // Try layout relative to the "views" dir 
+    if (!view.exists && options.isLayout) view = new View(orig.rootPath, options);
+
+    // Does not exist
+    if (!view.exists) {
+      // if (app.enabled('hints')) 
+        hintAtViewPaths(orig, options);
+      throw new Error('failed to locate view "' + orig.view + '"');
+    }
+    
+    return view
 }
 
 // ------------------------------------------------------------------------
