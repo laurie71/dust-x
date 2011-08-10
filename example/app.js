@@ -32,8 +32,9 @@ app.configure(function() {
 
 // Routes
 
-app.get('/', function(req, res){
-    res.render('index', { title: 'Express + Dust' })
+app.get('/:path(*)', function(req, res) {
+    var path = req.param('path') || 'index'
+    res.render(path, { title: 'Express + Dust' })
 })
 
 // Only listen on $ node app.js
