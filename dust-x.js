@@ -6,7 +6,7 @@
 var dust = require('dust')
   , http = require('http')
   , View = require('express/lib/view.js')
-  
+
 // ------------------------------------------------------------------------
 
 var DEBUG = false
@@ -30,7 +30,7 @@ dust.optimizers.format = function(context, node) {
 // Make Dust use Express to load templates for partials.
 // This is used when a Dust template references another template, e.g. with:
 // {<template}
-dust.onLoad = function getView(name, context, callback) {
+dust.onLoad = function onLoad(name, context, callback) {
     debug('onLoad', name)
 
 try{
@@ -161,7 +161,7 @@ this.compile = function(str, opts) {
 // Express from res.send()'ing the result of the template function, which
 // we need to do asyncronously.
 var _render = http.ServerResponse.prototype.render
-  , _dummy = function() {}
+  , _onerror = function(e) { if (e) throw(e) }
 http.ServerResponse.prototype.render = function render(xview, opts, fn, parent, sub) {
     if (typeof(options) == 'function') {
         fn = opts;
@@ -187,7 +187,7 @@ http.ServerResponse.prototype.render = function render(xview, opts, fn, parent, 
     
     // call default render, passing a no-op callbackto prevent Express from 
     // calling res.send() 
-    _render.call(this, xview, opts, _dummy, parent, sub)
+    _render.call(this, xview, opts, _onerror, parent, sub)
 }
 
 // ------------------------------------------------------------------------
