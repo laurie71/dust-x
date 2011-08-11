@@ -73,7 +73,7 @@ License
 
 [1]: http://akdubya.github.com/dustjs/
 [2]: http://expressjs.com/
-[3]: ./example/
+[3]: example/
 [4]: https://github.com/laurie71/dust-x/issues
 [5]: http://groups.google.com/group/express-js
-[6]: ./LICENSE.txt
+[6]: LICENSE.txt
