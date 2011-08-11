@@ -6,12 +6,15 @@
 </head>
 <body>
     <h1>Express + Dust</h1>
-    <p>This is a trivial DustJS template example.</p>
-    <p>Interpolation works: {title}</p>
-    <p>Other examples of use:
+    <h2>Basic Example</h2>
+    <p>This is a trivial DustJS template example, showing that Dust features
+       work as expected; for example, interpolation:
+       <blockquote>{title}</blockquote></p>
+    <p>Other examples:
         <ul>
-            <li><a href="with-layout">Page with layout</a></li>
-            <li><a href="syntax-error">Page with syntax error</a></li>
+            <li><a href="with-layout">Page with layout</a> using Dust inline partials</li>
+            <li><a href="syntax-error">Page with syntax error</a> showing how template errors are reported</li>
+            <li><a href="missing">Missing page</a> showing what happens when a template is not found</li>
         </ul>
     </p>
 </body>
