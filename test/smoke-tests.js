@@ -1,13 +1,14 @@
 var assert = require('assert')
-  // , expresso = require('expresso')
-  , dustx = require('dust-x')
-  
+  , app = require('../example/app')
+
 module.exports = {
-    'test 1': function(end) {
-        assert.ok(true, 'pre-test')
-        
-        end(function() {
-            assert.ok(false, 'post-test')
-        })
+    'GET /': function() {
+        assert.response(app,
+            { url: '/' },
+            { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' }},
+            function(res) {
+                assert.includes(res.body, '<title>Dust-X Demo</title>');
+            }
+        )
     }
 }
