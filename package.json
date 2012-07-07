@@ -15,8 +15,8 @@
 , "scripts": { "test": "expresso -I . test/*-tests.js" }
 
 , "dependencies": 
-  { "dust": "~0.3"
-  }
+ { "dustjs-linkedin": "~0.6.0"
+ }
 
 , "devDependencies": 
   { "expresso": "*"
