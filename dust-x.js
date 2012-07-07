@@ -6,6 +6,7 @@
 var dust = require('dustjs-linkedin')
   , http = require('http')
   , View = require('express/lib/view.js')
+  , self = this;
 
 // ------------------------------------------------------------------------
 
@@ -21,17 +22,32 @@ var summary = function(str) {
 
 // ------------------------------------------------------------------------
     
-// TODO: This needs a setter
-// Disable whitespace compression.
-dust.optimizers.format = function(context, node) {
-    return node;
+// Save original dust object prior to method override.
+_dust = dust;
+
+var preset = {
+  whitespace: true
 };
+
+self.options = function options ( settings ) {
+  preset = settings || preset;
+  return self;
+};
+
+dust.setWhitespace = function () {
+  dust.optimizers.format = (!!!preset.whitespace)
+    ? function(context, node) { return node; }
+    : _dust.optimizers.format;
+};
+
 
 // Make Dust use Express to load templates for partials.
 // This is used when a Dust template references another template, e.g. with:
 // {<template}
 dust.onLoad = function onLoad(name, context, callback) {
     debug('onLoad', name);
+
+    dust.setWhitespace();
 
     // var v = view.lookup(name, context.stack.head)
     var v = view_lookup(name, context.stack.head);
