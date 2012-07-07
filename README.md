@@ -1,15 +1,22 @@
 Dust Templates for Express
 ==========================
-`dust-x` integrates [Dust][1] templates into [Express][2].
+['dust-x'][7] integrates [Dust][1] templates into [Express][2].
 
 Installation
 ------------
 Since `dust-x` is still experimental, it's not published
-to npm yet. To use it, clone the git repository into your
-project directly:
+to npm yet. To use it, add it to your dependencies.
 
-    $ cd node_modules
-    $ git clone git://github.com/laurie71/dust-x.git
+```json
+{"dependencies": { 
+  "dust-x": "git://github.com/laurie71/dust-x.git" }}
+```
+
+Then run the command
+
+```shell
+ npm install -d
+```
 
 Usage
 -----
@@ -52,7 +59,7 @@ practice. You do need to bear it in mind if you want
 to migrate existing templates from another view engine
 to Dust, though.
 
-
+  
 Support
 -------
 If you have problems getting `dust-x` to work in your
@@ -77,3 +84,4 @@ License
 [4]: https://github.com/laurie71/dust-x/issues
 [5]: http://groups.google.com/group/express-js
 [6]: LICENSE.txt
+[7]: https://github.com/linkedin/dustjs/
