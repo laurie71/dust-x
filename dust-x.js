@@ -35,7 +35,7 @@ self.options = function options ( settings ) {
 };
 
 dust.setWhitespace = function () {
-  dust.optimizers.format = (!!!preset.whitespace)
+  dust.optimizers.format = (!!preset.whitespace)
     ? function(context, node) { return node; }
     : _dust.optimizers.format;
 };
