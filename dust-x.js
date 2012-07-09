@@ -6,6 +6,7 @@
 var dust = require('dustjs-linkedin')
   , http = require('http')
   , View = require('express/lib/view.js')
+  , res = http.ServerResponse.prototype
   , self = this;
 
 // ------------------------------------------------------------------------
@@ -26,7 +27,8 @@ var summary = function(str) {
 _dust = dust;
 
 var preset = {
-  whitespace: true
+  whitespace: true ,
+  cache: true
 };
 
 self.options = function options ( settings ) {
@@ -92,10 +94,9 @@ this.compile = function(str, opts) {
     var name = opts.filename;
     debug('compile', name, '\n\t', summary(str));
 
-    // If template caching is disabled, we need to completely clear the cache.
-    // Just removing `name` from the cache isn't sufficient, as Dust doesn't
-    // go through this function for loading template partials (see above).
-    dust.cache = {}; // XXX make dependant on opts.cache / app.env == dev / ???
+    if ( !!!preset.cache ) {
+      dust.cache = {};
+    }
     
     dust.loadSource(dust.compile(str, name));
     
@@ -106,7 +107,7 @@ this.compile = function(str, opts) {
           , next = _dust.next
           , layout = _dust.layout
           , partial = _dust.partial
-          , callback = _dust.callback
+          , callback = _dust.callback;
 
         dust.render(name, opts, function onrender(err, html) {
             debug('onrender', name, '->', summary(html));
@@ -133,10 +134,10 @@ this.compile = function(str, opts) {
 // request, response and next() function from this.compile() and prevent
 // Express from res.send()'ing the result of the template function, which
 // we need to do asyncronously.
-var _render = http.ServerResponse.prototype.render
+var _render = res.render
   , _onerror = function(e) { if (e) throw(e); };
 
-http.ServerResponse.prototype.render = function render(xview, opts, fn, parent, sub) {
+res.render = function render(xview, opts, fn, parent, sub) {
     if (typeof(options) == 'function') {
         fn = opts;
         opts = null;
