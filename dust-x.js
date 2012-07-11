@@ -18,7 +18,7 @@ var debug = DEBUG
     : function() {};
     
 var summary = function(str) {
-    return str.split('\n')[0].slice(0, 50)+'...'
+    return str.split('\n')[0].slice(0, 50)+'...';
 };
 
 // ------------------------------------------------------------------------
@@ -36,8 +36,9 @@ self.options = function options ( settings ) {
   return self;
 };
 
-dust.setWhitespace = function () {
-  dust.optimizers.format = (!!preset.whitespace)
+dust.setWhitespace = function ( context ) {
+  var keepSpacing = context._dust.whitespace;
+  dust.optimizers.format = ( !!preset.whitespace || !!keepSpacing )
     ? function(context, node) { return node; }
     : _dust.optimizers.format;
 };
@@ -49,11 +50,10 @@ dust.setWhitespace = function () {
 dust.onLoad = function onLoad(name, context, callback) {
     debug('onLoad', name);
 
-    dust.setWhitespace();
+    dust.setWhitespace( context );
 
-    // var v = view.lookup(name, context.stack.head)
     var v = View.lookup(name, context.stack.head);
-    
+
     debug('onLoad ->', summary(v.contents));
     callback(null, v.contents);
 };
