@@ -137,31 +137,38 @@ this.compile = function(str, opts) {
 var _render = res.render
   , _onerror = function(e) { if (e) throw(e); };
 
-res.render = function render(xview, opts, fn, parent, sub) {
+res.render = function render(xview, context, fn, parent, sub) {
+    // context is opts when looking in express.
+
     if (typeof(options) == 'function') {
-        fn = opts;
-        opts = null;
+        fn = context;
+        context = null;
     }
     
     // pass additional context we'll need in compile/render/load. we need
     // to store opts.layout and opts.isPartial and set both to false to
     // prevent Express from handling those syncronously, then handle them
     // during render
-    opts = opts || {};
-    opts._dust = {};
-    opts._dust.res = this;
-    opts._dust.req = this.req;
-    opts._dust.next = this.req.next;
-    opts._dust.callback = fn;
 
-    opts._dust.layout = opts.layout;
-    opts.layout = false;
+    context = context || {};
+    var = settings = context._dust = context._dust || {};
 
-    opts._dust.isPartial = opts.isPartial;
-    opts.isPartial = false;
+    settings.caching = settings.cache || true;
+    settings.whitespace = settings.whitespace || true;
+
+    settings.res = this;
+    settings.req = this.req;
+    settings.next = this.req.next;
+    settings.callback = fn;
+
+    settings.layout = context.layout;
+    context.layout = false;
+
+    settings.isPartial = context.isPartial;
+    context.isPartial = false;
     
     // call default render, passing a no-op callbackto prevent Express from 
     // calling res.send() 
-    _render.call(this, xview, opts, _onerror, parent, sub);
+    _render.call(this, xview, context, _onerror, parent, sub);
 };
 
