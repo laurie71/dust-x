@@ -153,9 +153,9 @@ res.render = function render(xview, context, fn, parent, sub) {
     // during render
 
     context = context || {};
-    var = settings = context._dust = context._dust || {};
+    var settings = context._dust = context._dust || {};
 
-    settings.caching = settings.cache || true;
+    settings.cache = settings.cache || true;
     settings.whitespace = settings.whitespace || true;
 
     settings.res = this;
