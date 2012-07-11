@@ -90,8 +90,10 @@ dust.load = function(name, chunk, context) {
 // The Express / Dust interface.
 // Note: this is called by Express when rendering a view/partial, but is
 // *not* called by Dust for partials referenced by Dust's built-in syntax.
-this.compile = function(str, opts) {
-    var name = opts.filename;
+this.compile = function(str, context) {
+    // context is opts when looking in express.
+
+    var name = context.filename;
     debug('compile', name, '\n\t', summary(str));
 
     if ( !!!preset.cache ) {
@@ -100,24 +102,24 @@ this.compile = function(str, opts) {
     
     dust.loadSource(dust.compile(str, name));
     
-    return function render(opts) {
+    return function render(context) {
         debug('render', name);
-        var _dust = opts._dust
+        var _dust = context._dust
           , res = _dust.res
           , next = _dust.next
           , layout = _dust.layout
           , partial = _dust.partial
           , callback = _dust.callback;
 
-        dust.render(name, opts, function onrender(err, html) {
+        dust.render(name, context, function onrender(err, html) {
             debug('onrender', name, '->', summary(html));
             if (err) return next(err);
 
             // async version of tail end of res._render logic:
             if (layout) {
-                opts.isLayout = true;
-                opts.layout = false;
-                opts.body = html;
+                context.isLayout = true;
+                context.layout = false;
+                context.body = html;
                 this.render(layout, options, callback, view, true); // fixme ??? needs testing
             } else if (partial) {
                 callback(null, html); // fixme is this the right thing to do here?
