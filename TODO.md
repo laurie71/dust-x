@@ -1,6 +1,5 @@
 TODO
 ====
- * provide options to
-   * enable/disable caching of templates (!!! cache currently disabled !!!)
+ * chaching enabled, test caching vs non-caching
  * test partials using Express' partial() functionality
  
