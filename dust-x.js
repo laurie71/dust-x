@@ -139,6 +139,9 @@ this.compile = function(str, context) {
 var _render = res.render
   , _onerror = function(e) { if (e) throw(e); };
 
+// release dust to the res object.
+res.dust = dust;
+
 res.render = function render(xview, context, fn, parent, sub) {
     // context is opts when looking in express.
 
@@ -150,7 +153,7 @@ res.render = function render(xview, context, fn, parent, sub) {
     // pass additional context we'll need in compile/render/load. we need
     // to store opts.layout and opts.isPartial and set both to false to
     // prevent Express from handling those syncronously, then handle them
-    // during render
+    // during render.
 
     context = context || {};
     var settings = context._dust = context._dust || {};
@@ -170,7 +173,7 @@ res.render = function render(xview, context, fn, parent, sub) {
     context.isPartial = false;
     
     // call default render, passing a no-op callbackto prevent Express from 
-    // calling res.send() 
+    // calling res.send().
     _render.call(this, xview, context, _onerror, parent, sub);
 };
 
