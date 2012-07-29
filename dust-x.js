@@ -38,7 +38,7 @@ self.options = function options ( settings ) {
 
 dust.setWhitespace = function ( context ) {
   var keepSpacing = context._dust.whitespace;
-  dust.optimizers.format = ( !!preset.whitespace || !!keepSpacing )
+  dust.optimizers.format = ( !!preset.whitespace )
     ? function(context, node) { return node; }
     : _dust.optimizers.format;
 };
@@ -159,7 +159,6 @@ res.render = function render(xview, context, fn, parent, sub) {
     var settings = context._dust = context._dust || {};
 
     settings.cache = settings.cache || true;
-    settings.whitespace = settings.whitespace || true;
 
     settings.res = this;
     settings.req = this.req;
