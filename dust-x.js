@@ -37,7 +37,6 @@ self.options = function options ( settings ) {
 };
 
 dust.setWhitespace = function ( context ) {
-  var keepSpacing = context._dust.whitespace;
   dust.optimizers.format = ( !!preset.whitespace )
     ? function(context, node) { return node; }
     : _dust.optimizers.format;
